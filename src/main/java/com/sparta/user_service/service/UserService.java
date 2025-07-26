@@ -1,10 +1,13 @@
 package com.sparta.user_service.service;
 
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.sparta.user_service.config.JwtTokenProvider;
 import com.sparta.user_service.domain.RoleType;
 import com.sparta.user_service.domain.User;
+import com.sparta.user_service.dto.LoginRequestDto;
 import com.sparta.user_service.dto.SignUpRequestDto;
 import com.sparta.user_service.dto.SignUpResponseDto;
 import com.sparta.user_service.exception.GlobalException;
@@ -18,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	private static UserRepository userRepository;
 	private static PasswordEncoder passwordEncoder;
+	private static JwtTokenProvider jwtTokenProvider;
 
 	public SignUpResponseDto signup(SignUpRequestDto request) {
 		if (userRepository.existsByUsername(request.username())) {
@@ -55,5 +59,16 @@ public class UserService {
 			user.getNickname(),
 			user.getRoles()
 		);
+	}
+
+	public String login(LoginRequestDto request) {
+		User user = userRepository.findByUsername(request.username())
+			.orElseThrow(() -> new GlobalException(UserErrorCode.INVALID_CREDENTIALS));
+
+		if (!passwordEncoder.matches(request.password(), user.getPassword())) {
+			throw new GlobalException(UserErrorCode.INVALID_CREDENTIALS);
+		}
+
+		return jwtTokenProvider.generateToken(user);
 	}
 }
