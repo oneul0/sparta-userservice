@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Repository;
 
+import com.sparta.user_service.domain.RoleType;
 import com.sparta.user_service.domain.User;
 
 @Repository
@@ -29,9 +30,9 @@ public class UserRepository {
 		return usernameToId.containsKey(username);
 	}
 
-	public User save(String username, String password, String nickname) {
+	public User save(String username, String password, String nickname, RoleType userRole) {
 		Long id = sequence.getAndIncrement();
-		User user = new User(id, username, password, nickname);
+		User user = new User(id, username, password, nickname, userRole);
 		idStore.put(id, user);
 		usernameToId.put(username, id);
 		return user;

@@ -3,6 +3,7 @@ package com.sparta.user_service.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.sparta.user_service.domain.RoleType;
 import com.sparta.user_service.domain.User;
 import com.sparta.user_service.dto.SignUpRequestDto;
 import com.sparta.user_service.dto.SignUpResponseDto;
@@ -26,7 +27,8 @@ public class UserService {
 		User user = userRepository.save(
 			request.username(),
 			passwordEncoder.encode(request.password()),
-			request.nickname()
+			request.nickname(),
+			RoleType.USER
 		);
 
 		return new SignUpResponseDto(
@@ -36,4 +38,22 @@ public class UserService {
 		);
 	}
 
+	public SignUpResponseDto adminSignup(SignUpRequestDto request) {
+		if (userRepository.existsByUsername(request.username())) {
+			throw new GlobalException(UserErrorCode.USER_ALREADY_EXISTS);
+		}
+
+		User user = userRepository.save(
+			request.username(),
+			passwordEncoder.encode(request.password()),
+			request.nickname(),
+			RoleType.ADMIN
+		);
+
+		return new SignUpResponseDto(
+			user.getUsername(),
+			user.getNickname(),
+			user.getRoles()
+		);
+	}
 }
