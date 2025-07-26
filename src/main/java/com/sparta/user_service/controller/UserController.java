@@ -20,4 +20,6 @@ public class UserController {
 	public ResponseEntity<?> signup(@RequestBody SignUpRequestDto request) {
 		return ResponseEntity.ok(userService.signup(request));
 	}
+
+	
 }
