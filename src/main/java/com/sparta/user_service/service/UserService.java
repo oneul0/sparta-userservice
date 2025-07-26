@@ -17,14 +17,16 @@ public class UserService {
 	private static PasswordEncoder passwordEncoder;
 
 	public SignUpResponseDto signup(SignUpRequestDto request) {
-		//todo: 에러 검사 추가
-		User user = new User(
+		if (userRepository.existsByUsername(request.username())) {
+			throw new DuplicateUserException("이미 가입된 사용자입니다.");
+		}
+
+		User user = userRepository.save(
 			request.username(),
 			passwordEncoder.encode(request.password()),
 			request.nickname()
 		);
 
-		//todo: 인메모리 저장 로직 추가
 		return new SignUpResponseDto(
 			user.getUsername(),
 			user.getNickname(),

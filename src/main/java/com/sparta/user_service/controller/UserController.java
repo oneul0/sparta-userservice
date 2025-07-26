@@ -9,16 +9,15 @@ import com.sparta.user_service.dto.SignUpRequestDto;
 import com.sparta.user_service.dto.SignUpResponseDto;
 import com.sparta.user_service.service.UserService;
 
-@RestController
-public class UserController {
-	private final UserService userService;
+import lombok.RequiredArgsConstructor;
 
-	public UserController(UserService userService) {
-		this.userService = userService;
-	}
+@RestController
+@RequiredArgsConstructor
+public class UserController {
+	private static UserService userService;
 
 	@PostMapping("/signup")
-	public ResponseEntity<SignUpResponseDto> signup(@RequestBody SignUpRequestDto request) {
-		return null;
+	public ResponseEntity<?> signup(@RequestBody SignUpRequestDto request) {
+		return userService.signup(request);
 	}
 }

@@ -1,20 +1,13 @@
 package com.sparta.user_service.domain;
 
-public enum Role {
-	USER("ROLE_USER"),
-	ADMIN("ROLE_ADMIN");
+public class Role {
+	private final RoleType role;
 
-	private final String authority;
-
-	Role(String authority) {
-		this.authority = authority;
+	public Role(RoleType role) {
+		this.role = role;
 	}
 
-	public String getAuthority() {
-		return authority;
-	}
-
-	public String getRole() {
-		return name();
+	public RoleType getRole() {
+		return role;
 	}
 }
