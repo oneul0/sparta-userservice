@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.sparta.user_service.domain.User;
 import com.sparta.user_service.dto.SignUpRequestDto;
 import com.sparta.user_service.dto.SignUpResponseDto;
+import com.sparta.user_service.exception.GlobalException;
+import com.sparta.user_service.exception.UserErrorCode;
 import com.sparta.user_service.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,7 @@ public class UserService {
 
 	public SignUpResponseDto signup(SignUpRequestDto request) {
 		if (userRepository.existsByUsername(request.username())) {
-			throw new DuplicateUserException("이미 가입된 사용자입니다.");
+			throw new GlobalException(UserErrorCode.USER_ALREADY_EXISTS);
 		}
 
 		User user = userRepository.save(
