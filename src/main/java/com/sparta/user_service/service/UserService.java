@@ -22,9 +22,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-	private static UserRepository userRepository;
-	private static PasswordEncoder passwordEncoder;
-	private static JwtTokenProvider jwtTokenProvider;
+	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
+	private final JwtTokenProvider jwtTokenProvider;
 
 	public SignUpResponseDto signup(SignUpRequestDto request) {
 		if (userRepository.existsByUsername(request.username())) {
