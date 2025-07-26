@@ -21,5 +21,8 @@ public class UserController {
 		return ResponseEntity.ok(userService.signup(request));
 	}
 
-	
+	@PostMapping("/admin/signup")
+	public ResponseEntity<?> adminSignup(@RequestBody SignUpRequestDto request) {
+		return ResponseEntity.ok(userService.adminSignup(request));
+	}
 }

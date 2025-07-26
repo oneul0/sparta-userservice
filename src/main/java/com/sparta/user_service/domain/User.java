@@ -10,12 +10,12 @@ public class User {
 	private final String nickname;
 	private final List<Role> roles = new ArrayList<>();
 
-	public User(Long id, String username, String password, String nickname) {
+	public User(Long id, String username, String password, String nickname, RoleType userRole) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.nickname = nickname;
-		this.roles.add(new Role(RoleType.USER));
+		this.roles.add(new Role(userRole));
 	}
 
 	public Long getId() {
