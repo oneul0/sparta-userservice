@@ -17,7 +17,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtTokenProvider {
 
-	private final String SECRET_KEY = "secretkey";
+	private final String SECRET_KEY = "9XzL1p6UytGLNrc5PaZy4wD6Urs89eQ5iVgD+sjUYoE=";
 	private final long EXPIRATION = 1000L * 60 * 60;
 
 	public String generateToken(User user) {
