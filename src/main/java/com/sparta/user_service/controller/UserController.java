@@ -24,7 +24,7 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto request) {
+	public ResponseEntity<?> login(@RequestBody LoginRequestDto request) {
 		String token = userService.login(request);
 		return ResponseEntity.ok(new LoginResponseDto(token));
 	}
@@ -34,5 +34,9 @@ public class UserController {
 		return ResponseEntity.ok(userService.adminSignup(request));
 	}
 
-
+	@PostMapping("/admin/login")
+	public ResponseEntity<?> adminLogin(@RequestBody LoginRequestDto request) {
+		String token = userService.login(request);
+		return ResponseEntity.ok(new LoginResponseDto(token));
+	}
 }
