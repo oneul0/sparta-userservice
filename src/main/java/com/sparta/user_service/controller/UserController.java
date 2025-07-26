@@ -1,6 +1,9 @@
 package com.sparta.user_service.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,5 +41,11 @@ public class UserController {
 	public ResponseEntity<?> adminLogin(@RequestBody LoginRequestDto request) {
 		String token = userService.login(request);
 		return ResponseEntity.ok(new LoginResponseDto(token));
+	}
+
+	@PatchMapping("/admin/users/{userId}/roles")
+	public ResponseEntity<SignUpResponseDto> grantAdmin(@PathVariable Long userId) {
+		SignUpResponseDto response = userService.grantAdminRole(userId);
+		return ResponseEntity.ok(response);
 	}
 }

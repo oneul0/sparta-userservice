@@ -1,6 +1,7 @@
 package com.sparta.user_service.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
 	private static JwtTokenProvider jwtTokenProvider;

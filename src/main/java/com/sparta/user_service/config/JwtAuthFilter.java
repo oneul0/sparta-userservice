@@ -6,6 +6,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.sparta.user_service.exception.GlobalException;
+import com.sparta.user_service.exception.JwtErrorCode;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,13 +27,24 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
 
-		String token = resolveToken(request);
-		if (token != null && jwtTokenProvider.validateToken(token)) {
-			Authentication auth = jwtTokenProvider.getAuthentication(token);
-			SecurityContextHolder.getContext().setAuthentication(auth);
-		}
+		try {
+			String token = resolveToken(request);
 
-		filterChain.doFilter(request, response);
+			if (token != null) {
+				if (jwtTokenProvider.validateToken(token)) {
+					Authentication auth = jwtTokenProvider.getAuthentication(token);
+					SecurityContextHolder.getContext().setAuthentication(auth);
+				} else {
+					throw new GlobalException(JwtErrorCode.INVALID_TOKEN);
+				}
+			}
+			filterChain.doFilter(request, response);
+
+		} catch (GlobalException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new GlobalException(JwtErrorCode.ACCESS_DENIED);
+		}
 	}
 
 	private String resolveToken(HttpServletRequest request) {
