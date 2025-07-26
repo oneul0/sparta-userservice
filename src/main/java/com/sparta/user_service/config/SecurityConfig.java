@@ -24,9 +24,20 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
+			.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/signup", "/login").permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.requestMatchers(
+					"/v3/api-docs",
+					"/v3/api-docs/**",
+					"/swagger-ui.html",
+					"/swagger-ui/**",
+					"/swagger-resources/**",
+					"/swagger*/**",
+					"/webjars/**",
+					"/error"
+				).permitAll()
 				.anyRequest().authenticated()
 			)
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -34,6 +45,7 @@ public class SecurityConfig {
 
 		return http.build();
 	}
+
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
